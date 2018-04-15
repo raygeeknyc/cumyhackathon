@@ -18,6 +18,7 @@ import models
 
 # [START imports]
 from flask import Flask, render_template, request
+from models import Judge
 # [END imports]
 
 # [START create_app]
@@ -33,22 +34,13 @@ def form():
 # [END form]
 
 
-# [START form]
+# [START judge_form]
 @app.route('/signin', methods=['POST'])
-def signin_form():
-    name = request.form['name']
-    email = request.form['email']
-    contact = request.form['site_url']
-
-    # [END form]
-    # [START render_template]
-    return render_template(
-        'signed_in.html',
-        name=name,
-        email=email,
-        contact=contact)
-    # [END render_template]
-
+def judge_form():
+    judges = Judge.GetAll()
+    return render_template('signed_in.html',
+      judges=judges)
+# [END judge_form]
 
 @app.errorhandler(500)
 def server_error(e):

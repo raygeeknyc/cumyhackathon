@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+{% autoescape true %}
 <html>
  <head>
    <title>Judge Signed In</title>
@@ -5,12 +7,13 @@
  </head>
  <body>
    <div id="container">
-     <div class="pagetitle">
-       <h1>Signed in</h1>
-     </div>
-     <div id="main">
-       <p>You're signed in, {{name}}!</p>
-     </div>
+   <!-- [START judges] -->
+   {% for judge in judges %}
+      <div class="row">
+       <b>{{ judge.name }}
+      </div>
+   {% endfor %}
    </div>
  </body>
 </html>
+{% endautoescape %}
