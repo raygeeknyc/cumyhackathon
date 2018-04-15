@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cunyhackathon-1522753669833",
+  "private_key_id": "81a7d8d39eaeb20545c114e715e24f5519f506e2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDe0l7AVmoHmRgJ\ngxy2+baaSnyM95LwkHhN4YZYIAzFOOT8JcsWPgXQxEjbulrqdW+Y13jFb7BZtLRI\nCOwDLanI0VneIuS27oPPWX8x78jpgmymu4N1wPZIY7DPbqTT49UhPsJqgz6UGSMv\noEVne4NOrAAse6KrzcNWEK468Zufx1MNcf82hVAQIJRYNLuuGTsS1Pp8eueSCbP7\nmo6fwQI+WN2AlACQe8ozujh2UWgNyxZQMy2nZLHLuJqBvZnnPUco4yMVAuA1JzCo\nOeU6q2YD5Nsfkkn/yqq4l+QgJ9neEAaEYpdPAzbToBb4e+I5logEMFc9aTH2iKDQ\nKbR0L8cdAgMBAAECggEAErPPOcJtdxXMHrN4+LxQLcMl94ipz+dQZOxF1z+/0qeX\nELlbXBKSPZbVrRu6ZdOIxzUB8UOrc0KBOOQ6BLCtTF3GEHV9UDcIEtXAOo2V0rbp\nYVVIqdzFNaF1RcC6G2h6iyY2MbQYz8I/lQL7nSP3PkzRkIPc5ruIM1q5eD98GhaV\nki8EcYpRoDIxclat5PRX0vgb6wyOgk5gh/xTxqXMOAcM0KGS2BM/VzcF98QcwCcD\nGBmJL1Hd1k0kky1sRvaOGL4iOQQL6i6M9sqtdkavjiAE+W35Tz6RA0cjyY59D2on\nTIIEOCiRaoQ6LwnOT6uZlO1dj3w1m/BQFSCYe7HZQQKBgQD4X4RfelJsUPJhwfr9\nCuF9VBcmAt0qTt0J1MZfhL+cuIWvcN5etvpSxQBH+ivvZSpx0BSEVETbbIZ6pq8g\n6M8LIGIDWKRvV/x3MYbJmEmCBUB65VyqIfbf5hwYfz+O+GpV2U55XMplmPY8+Edl\nQrljSG2eqU1jkvgFE9kypBDXvwKBgQDlqf3YmRxBOnXnBT4NePfamAZCO917C1L0\nd2TWW32dUktI9PpsFfuviWKm+RIy6a5XZjcGb8ySh31rpJs7IqLd8jE8vbcecU5I\nVK/ud0ye98+3pxWgl3dyks/B6oTNJ28FPqzhAnSJdAjLjVkZCs4eTiCTfoG7GK2v\nSg7xYW+4IwKBgErj+jUT3CB+8+bYJ8b+7ejtXyF+AZQNPYcGWl5Y17H4zY6N+O8U\nOzyT3DbXz0Ga/oZc2KLiCfUjrxTyh6HjsPJI7GTX6JUOMbj6/QpyWc/Tp5Km8B74\nqMjwSI52aALDEsUaBhiACyNBURYnQtfcm6u9HhiWMhiRKynUx0wGvnFfAoGBAJK1\nkeQwgr0kZDbMwYQHt4UbQjxDU8uLQ1XJg0/vqAG8lT0oyWQMcvgCclOpnjeJ0YYh\nVJs3Bd7A0JzXzRXsnU/crBlaM8Utqk1IVA6ohPiz4yw1fvpUZ8h4AmGkt2r6etBF\n5lfioqE/z3KAe98kaOExFVxDHwpuzFzCmWMW1DAzAoGBAMBoeJmutsMHKLxyYjAe\nGnyxiesX77foJPiy5K9cn7c70cxXB1ScP7qO6bFCKVUinVgqiFJ9eFXp6AJhdcwa\nE2vsIGqzFNBa6xXswfqGwaw2jgNY7cg3yIhvouptJmOBHG0W77a+42ND8grDAUiG\nIRUuiE09zLlsnn5VHaXFBRsb\n-----END PRIVATE KEY-----\n",
+  "client_email": "starting-account-zaxzgvszuex3@cunyhackathon-1522753669833.iam.gserviceaccount.com",
+  "client_id": "113694012154858448554",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/starting-account-zaxzgvszuex3%40cunyhackathon-1522753669833.iam.gserviceaccount.com"
+}

@@ -1,0 +1,6 @@
+indexes:
+- kind: Score
+  ancestor: no
+  properties:
+   - name: team
+   - name: judge
