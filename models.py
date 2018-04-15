@@ -42,6 +42,15 @@ class _NamedJudgingEntity(_JudgingEntity):
     print("Found {} instances".format(len(entities)))
     return entities
 
+  @staticmethod
+  def _NameOf(entity):
+    return entity.name.upper()
+
+  @classmethod
+  def GetSorted(cls):
+    entities = cls.GetAll()
+    return sorted(entities, key=cls._NameOf)
+
 class Team(_NamedJudgingEntity):
   name = ndb.StringProperty()
   members = ndb.StringProperty()
@@ -49,10 +58,14 @@ class Team(_NamedJudgingEntity):
 
   @classmethod
   def AddExample(cls):
+    cls.Add(name = "team 1", members = "", contact = "raygeeknyc@gmail.com")
+
+  @classmethod
+  def Add(cls, name, members, contact):
     print("Adding an example {}".format(cls.__name__))
-    team_one = Team(name = "team 1", members = "", contact = "raygeeknyc@gmail.com")
-    print("Created {}".format(team_one))
-    key = team_one.put()
+    team = Team(name = name, members = members, contact = contact)
+    print("Created {}".format(team))
+    key = team.put()
     print("Added {}".format(key))
     retrieved_copy = key.get()
     print("Retrieved {}".format(retrieved_copy))
@@ -77,10 +90,14 @@ class Judge(_NamedJudgingEntity):
 
   @classmethod
   def AddExample(cls):
+    cls.Add(name = "judge 1", contact = "none@nonesuch.com")
+
+  @classmethod
+  def Add(cls, name, contact):
     print("Adding an example {}".format(cls.__name__))
-    judge_one = Judge(name = "judge 1", contact = "none@nonesuch.com")
-    print("Created {}".format(judge_one))
-    key = judge_one.put()
+    judge = Judge(name = name, contact = contact)
+    print("Created {}".format(judge))
+    key = judge.put()
     print("Added {}".format(key))
     retrieved_copy = key.get()
     print("Retrieved {}".format(retrieved_copy))
@@ -129,6 +146,9 @@ def _SetupStaticData():
   Judge.DeleteAll()
   Team.AddExample()
   Judge.AddExample()
+  Judge.Add("Raymondo", "646-236-6743")
+  Judge.Add("Justin", "justin@cunystartups.com")
+  print("sorted", Judge.GetSorted())
   Category.AddExample()
   Score.AddExample()
 

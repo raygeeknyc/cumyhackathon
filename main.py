@@ -37,7 +37,7 @@ def form():
 # [START judge_form]
 @app.route('/signin', methods=['POST'])
 def judge_form():
-    judges = Judge.GetAll()
+    judges = Judge.GetSorted()
     return render_template('signed_in.html',
       judges=judges)
 # [END judge_form]
