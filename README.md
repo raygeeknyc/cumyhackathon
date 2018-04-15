@@ -1,2 +1,2 @@
-# cumyhackathon
+# CUNYhackathon
 Judging app for Hackathons
