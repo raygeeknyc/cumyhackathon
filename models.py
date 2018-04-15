@@ -1,14 +1,55 @@
 import sys
 from google.appengine.ext import ndb
 
-class Team(ndb.Model):
+class _JudgingEntity(ndb.Model):
+  @classmethod
+  def AddExample(cls):
+    pass
+
+  @classmethod
+  def DeleteAll(cls):
+    print("Deleting {}".format(cls.__name__))
+    all_instances = cls.query()
+    instance_count = 0
+    for key in all_instances.iter(keys_only=True):
+      print("Deleting {}".format(key))
+      key.delete()
+      instance_count += 1
+    print("Deleted {} of {}".format(instance_count, cls.__name__))
+ 
+  @classmethod
+  def GetAll(cls):
+    print("Finding all {}".format(cls.__name__))
+    instance_query = cls.query()
+    instances = instance_query.iter()
+    entities = []
+    for instance in instances:
+      entities.append(instance)
+      print("found: {}".format(instance))
+    print("Found {} instances".format(len(entities)))
+    return entities
+
+class _NamedJudgingEntity(_JudgingEntity):
+  @classmethod
+  def FindByName(cls, object_name):
+    print("Finding {} '{}'".format(cls.__name__, object_name))
+    instance_query = cls.query(cls.name == object_name )
+    instances = instance_query.iter()
+    entities = []
+    for instance in instances:
+      entities.append(instance)
+      print("found: {}".format(instance))
+    print("Found {} instances".format(len(entities)))
+    return entities
+
+class Team(_NamedJudgingEntity):
   name = ndb.StringProperty()
   members = ndb.StringProperty()
   contact = ndb.StringProperty()
 
-  @staticmethod
-  def AddExample():
-    print("Adding an example Team")
+  @classmethod
+  def AddExample(cls):
+    print("Adding an example {}".format(cls.__name__))
     team_one = Team(name = "team 1", members = "", contact = "raygeeknyc@gmail.com")
     print("Created {}".format(team_one))
     key = team_one.put()
@@ -16,13 +57,13 @@ class Team(ndb.Model):
     retrieved_copy = key.get()
     print("Retrieved {}".format(retrieved_copy))
 
-class Category(ndb.Model):
+class Category(_NamedJudgingEntity):
   name = ndb.StringProperty()
   description = ndb.StringProperty()
 
-  @staticmethod
-  def AddExample():
-    print("Adding an example Category")
+  @classmethod
+  def AddExample(cls):
+    print("Adding an example {}".format(cls.__name__))
     category_one = Category(name = "category 1", description = "a cat Category")
     print("Created {}".format(category_one))
     key = category_one.put()
@@ -30,13 +71,13 @@ class Category(ndb.Model):
     retrieved_copy = key.get()
     print("Retrieved {}".format(retrieved_copy))
 
-class Judge(ndb.Model):
+class Judge(_NamedJudgingEntity):
   name = ndb.StringProperty()
   contact = ndb.StringProperty()
 
-  @staticmethod
-  def AddExample():
-    print("Adding an example Judge")
+  @classmethod
+  def AddExample(cls):
+    print("Adding an example {}".format(cls.__name__))
     judge_one = Judge(name = "judge 1", contact = "none@nonesuch.com")
     print("Created {}".format(judge_one))
     key = judge_one.put()
@@ -44,16 +85,16 @@ class Judge(ndb.Model):
     retrieved_copy = key.get()
     print("Retrieved {}".format(retrieved_copy))
 
-class Score(ndb.Model):
+class Score(_JudgingEntity):
   team = ndb.StringProperty()
   judge = ndb.StringProperty()
   category = ndb.StringProperty()
   score = ndb.IntegerProperty()
   notes = ndb.StringProperty()
 
-  @staticmethod
-  def AddExample():
-    print("Adding an example Score")
+  @classmethod
+  def AddExample(cls):
+    print("Adding an example Judge")
     score_one = Score(team = "team 1",
       judge = "judge 1",
       category = "category 1",
@@ -65,10 +106,10 @@ class Score(ndb.Model):
     retrieved_copy = key.get()
     print("Retrieved {}".format(retrieved_copy))
 
-  @staticmethod
-  def FindExample():
-    print("Finding the example Score")
-    instance_query = Score.query(Score.team == "team 1",
+  @classmethod
+  def FindExample(cls):
+    print("Finding the example {}".format(cls.__name__))
+    instance_query = cls.query(Score.team == "team 1",
       Score.judge == 'judge 1')
     print("query {}".format(instance_query))
     instances = instance_query.iter()
@@ -79,35 +120,13 @@ class Score(ndb.Model):
     print("Found {} instances".format(instance_count))
     return instance_count
 
-def _FindByName(model_class, object_name):
-  print("Finding {} '{}'".format(model_class.__name__, object_name))
-  instance_query = model_class.query(model_class.name == object_name )
-  print("query {}".format(instance_query))
-  instances = instance_query.iter()
-  instance_count = 0
-  for instance in instances:
-      instance_count += 1
-      print("found: {} {}".format(instance_count, instance))
-  print("Found {} instances".format(instance_count))
-  return instance_count
-
-def _DeleteExisting(model_class):
-  print("Deleting {}".format(model_class))
-  all_instances = model_class.query()
-  instance_count = 0
-  for instance in all_instances:
-    print("Deleting {}".format(instance))
-    instance.key.delete()
-    instance_count += 1
-  print("Deleted {} of {}".format(instance_count, model_class.__name__))
- 
 def _SetupStaticData():
   print("Setting up data")
   print("Deleting old data")
-  _DeleteExisting(Score)
-  _DeleteExisting(Category)
-  _DeleteExisting(Team)
-  _DeleteExisting(Judge)
+  Score.DeleteAll()
+  Category.DeleteAll()
+  Team.DeleteAll()
+  Judge.DeleteAll()
   Team.AddExample()
   Judge.AddExample()
   Category.AddExample()
@@ -115,7 +134,9 @@ def _SetupStaticData():
 
 #if __name__ == "__main__":
 _SetupStaticData()
-while not _FindByName(Team, "team 1"):
+while not Team.GetAll():
+  pass
+while not Judge.FindByName("judge 1"):
   pass
 while not Score.FindExample():
   pass
