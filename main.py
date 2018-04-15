@@ -18,7 +18,7 @@ import models
 
 # [START imports]
 from flask import Flask, render_template, request
-from models import Judge
+from models import Judge, Score
 # [END imports]
 
 # [START create_app]
@@ -41,6 +41,16 @@ def judge_form():
     return render_template('signed_in.html',
       judges=judges)
 # [END judge_form]
+
+# [START scores_form]
+@app.route('/scores', methods=['POST', 'GET'])
+def scores_form():
+    team = 'team 1'
+    scores = Score.GetScoresForTeam(team)
+    return render_template('scores.html',
+      team = team,
+      scores=scores)
+# [END scores_form]
 
 @app.errorhandler(500)
 def server_error(e):

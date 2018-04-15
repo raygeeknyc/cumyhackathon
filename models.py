@@ -62,7 +62,7 @@ class Team(_NamedJudgingEntity):
 
   @classmethod
   def Add(cls, name, members, contact):
-    print("Adding an example {}".format(cls.__name__))
+    print("Adding a {}".format(cls.__name__))
     team = Team(name = name, members = members, contact = contact)
     print("Created {}".format(team))
     key = team.put()
@@ -94,7 +94,7 @@ class Judge(_NamedJudgingEntity):
 
   @classmethod
   def Add(cls, name, contact):
-    print("Adding an example {}".format(cls.__name__))
+    print("Adding a {}".format(cls.__name__))
     judge = Judge(name = name, contact = contact)
     print("Created {}".format(judge))
     key = judge.put()
@@ -109,16 +109,36 @@ class Score(_JudgingEntity):
   score = ndb.IntegerProperty()
   notes = ndb.StringProperty()
 
+  @staticmethod
+  def _ScoreKey(score):
+    return "{:10.10}".format(score.team)+"{:10.10}".format(score.judge)+"{:10.10}".format(score.category)
+
+  @classmethod
+  def GetScoresForTeam(cls, team):
+    print("Finding {} for '{}'".format(cls.__name__, team))
+    instance_query = cls.query(cls.team == team )
+    instances = instance_query.iter()
+    scores = []
+    for score in instances:
+      scores.append(score)
+    print("Found {} instances".format(len(scores)))
+    scores = sorted(scores, key=cls._ScoreKey)
+    return scores
+
   @classmethod
   def AddExample(cls):
-    print("Adding an example Judge")
-    score_one = Score(team = "team 1",
+    print("Adding an example {}".format(cls.__name__))
+    score_one = cls.Add(team = "team 1",
       judge = "judge 1",
       category = "category 1",
       score = 2,
       notes = "did not do it well")
-    print("Created {}".format(score_one))
-    key = score_one.put()
+
+  @classmethod
+  def Add(cls, team, judge, category, score, notes):
+    score = Score(team = team, judge = judge, category = category,
+      score = score, notes = notes)
+    key = score.put()
     print("Added {}".format(key))
     retrieved_copy = key.get()
     print("Retrieved {}".format(retrieved_copy))
@@ -151,6 +171,13 @@ def _SetupStaticData():
   print("sorted", Judge.GetSorted())
   Category.AddExample()
   Score.AddExample()
+  Score.Add(team = 'team 1', judge = 'judge 1', category = 'cat 2', score = 1, notes = 'two')
+  Score.Add(team = 'team 1', judge = 'judge 2', category = 'cat 1', score = 1, notes = 'two')
+  Score.Add(team = 'team 1', judge = 'judge 2', category = 'cat 2', score = 1, notes = 'two')
+  Score.Add(team = 'team 2', judge = 'judge 1', category = 'category 1', score = 2, notes = 'uno')
+  Score.Add(team = 'team 2', judge = 'judge 1', category = 'cat 2', score = 5, notes = 'FIVE!!!')
+  Score.Add(team = 'team 2', judge = 'judge 2', category = 'cat 2', score = 1, notes = 'two')
+  Score.Add(team = 'team 2', judge = 'judge 2', category = 'cat 1', score = 1, notes = 'two')
 
 #if __name__ == "__main__":
 _SetupStaticData()
