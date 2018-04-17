@@ -26,12 +26,12 @@ app = Flask(__name__)
 # [END create_app]
 
 
-# [START form]
-@app.route('/login')
+# [START start]
+@app.route('/login', methods=['POST', 'GET'])
 @app.route('/')
-def form():
+def start():
     return render_template('login.html')
-# [END form]
+# [END start]
 
 
 # [START judge_form]
@@ -41,6 +41,12 @@ def judge_form():
     return render_template('signed_in.html',
       judges=judges)
 # [END judge_form]
+
+# [START save_scores]
+@app.route('/save_scores', methods=['POST'])
+def save_scores():
+  return render_template('saved.html')
+# [END save_scores]
 
 # [START scores_form]
 @app.route('/scores', methods=['POST', 'GET'])
