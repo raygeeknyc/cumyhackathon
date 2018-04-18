@@ -47,10 +47,16 @@ def judge_form():
 def save_scores():
   items = []
   for i in range(len(request.form.getlist('judge'))):
-    items.append([request.form.getlist('judge')[i], request.form.getlist('category')[i],
-      request.form.getlist('score')[i], request.form.getlist('notes')[i]])
+    item = {}
+    item['judge'] = request.form.getlist('judge')[i]
+    item['category'] = request.form.getlist('category')[i]
+    item['score'] = int(request.form.getlist('score')[i])
+    item['notes'] = request.form.getlist('notes')[i]
+    items.append(item)
+  Score.SaveTeamItems(request.form['team'], items)
   return render_template('saved.html',
     team=request.form['team'],
+    count=len(items),
     data=items)
 # [END save_scores]
 

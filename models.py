@@ -110,6 +110,14 @@ class Score(_JudgingEntity):
   notes = ndb.StringProperty()
 
   @staticmethod
+  def SaveTeamItems(team, items):
+   old_scores = Score.GetScoresForTeam(team)
+   for score in old_scores:
+     score.key.delete()
+   for item in items:
+     Score.Add(team, item['judge'], item['category'], item['score'], item['notes'])
+
+  @staticmethod
   def _ScoreKey(score):
     return "{:10.10}".format(score.team)+"{:10.10}".format(score.judge)+"{:10.10}".format(score.category)
 
@@ -160,6 +168,8 @@ class Score(_JudgingEntity):
 def _SetupStaticData():
   print("Setting up data")
   print("Deleting old data")
+  for score in Score.GetAll():
+    print("Score: {}".format(score))
   Score.DeleteAll()
   Category.DeleteAll()
   Team.DeleteAll()
