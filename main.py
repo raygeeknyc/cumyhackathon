@@ -45,7 +45,13 @@ def judge_form():
 # [START save_scores]
 @app.route('/save_scores', methods=['POST'])
 def save_scores():
-  return render_template('saved.html')
+  items = []
+  for i in range(len(request.form.getlist('judge'))):
+    items.append([request.form.getlist('judge')[i], request.form.getlist('category')[i],
+      request.form.getlist('score')[i], request.form.getlist('notes')[i]])
+  return render_template('saved.html',
+    team=request.form['team'],
+    data=items)
 # [END save_scores]
 
 # [START scores_form]
