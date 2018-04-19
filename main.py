@@ -42,8 +42,6 @@ def judge_form():
       judges=judges)
 # [END judge_form]
 
-# [START save_scores]
-@app.route('/save_scores', methods=['POST'])
 def save_scores():
   print("saving scores")
   judge = request.form['judge']
@@ -58,11 +56,6 @@ def save_scores():
     item['notes'] = request.form.getlist('notes')[i]
     items.append(item)
   Score.SaveTeamItems(team, items)
-  return render_template('saved.html',
-    team=team,
-    count=len(items),
-    data=items)
-# [END save_scores]
 
 # [START all_scores_form]
 @app.route('/all_scores', methods=['POST', 'GET'])
@@ -77,6 +70,8 @@ def all_scores_form():
 # [START scores_form]
 @app.route('/scores', methods=['POST', 'GET'])
 def scores_form():
+    if request.form.getlist('save'):
+      save_scores()
     if request.form and request.form.getlist('judge'):
       judge = request.form.getlist('judge')[0]
     else:
@@ -85,9 +80,9 @@ def scores_form():
       team = request.form.getlist('team')[0]
     else:
       team = ''
+    print("***** j '{}' t '{}'".format(judge, team))
     judges = [j.name for j in Judge.GetAll()]
     teams = [t.name for t in Team.GetAll()]
-    print("ts: {}".format(teams))
     if team and judge:
       scores = [score for score in Score.GetScoresForTeam(team) if score.judge == judge]
     else:
