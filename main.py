@@ -18,7 +18,7 @@ import models
 
 # [START imports]
 from flask import Flask, render_template, request
-from models import Judge, Score
+from models import Judge, Score, Team, Category
 # [END imports]
 
 # [START create_app]
@@ -60,13 +60,39 @@ def save_scores():
     data=items)
 # [END save_scores]
 
+# [START all_scores_form]
+@app.route('/all_scores', methods=['POST', 'GET'])
+def all_scores_form():
+    team = 'team 1'
+    scores = Score.GetScoresForTeam(team)
+    return render_template('all_scores.html',
+      team = team,
+      scores=scores)
+# [END all_scores_form]
+
 # [START scores_form]
 @app.route('/scores', methods=['POST', 'GET'])
 def scores_form():
-    team = 'team 1'
-    scores = Score.GetScoresForTeam(team)
+    if request.form and request.form.getlist('judge'):
+      judge = request.form.getlist('judge')[0]
+    else:
+      judge = ''
+    if request.form and request.form.getlist('team'):
+      team = request.form.getlist('team')[0]
+    else:
+      team = ''
+    judges = [j.name for j in Judge.GetAll()]
+    teams = [t.name for t in Team.GetAll()]
+    print("ts: {}".format(teams))
+    if team and judge:
+      scores = [score for score in Score.GetScoresForTeam(team) if score.judge == judge]
+    else:
+      scores = []
     return render_template('scores.html',
       team = team,
+      judge = judge,
+      teams = teams,
+      judges = judges,
       scores=scores)
 # [END scores_form]
 

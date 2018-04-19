@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+ <head>
+   <title>Scores for team {{team}}</title>
+   <link rel="stylesheet" type="text/css" href="/static/style.css">
+ </head>
+ <body>
+   <div id="container">
+   <form method="post" action="{{ url_for('save_scores') }}">
+   <table name="scores">
+   <tr><th>Judge</th><th>Category</th><th>Score</th><th>Notes</th></tr>
+   <!-- [START scores] -->
+   {% for score in scores %}
+      <div class="row">
+       <tr><td><input name="judge" value="{{score.judge}}" readonly/></td><td><input name="category" value="{{score.category}}" readonly/></td><td><input type="text" name="score" value="{{score.score}}"></td><td><input type="text" name="notes" value="{{score.notes}}"></td></tr>
+      </div>
+   {% endfor %}
+   </table>
+   <input type="hidden" name="team" value="{{team}}"/>
+   <input type="submit"/>
+   </form>
+   </div>
+ </body>
+</html>
+{% endautoescape %}
