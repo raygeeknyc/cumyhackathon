@@ -190,11 +190,11 @@ def _SetupStaticData():
   Score.Add(team = 'team 2', judge = 'judge 2', category = 'cat 2', score = 1, notes = 'two')
   Score.Add(team = 'team 2', judge = 'judge 2', category = 'cat 1', score = 1, notes = 'two')
 
-#if __name__ == "__main__":
-_SetupStaticData()
-while not Team.GetAll():
-  pass
-while not Judge.FindByName("judge 1"):
-  pass
-while not Score.FindExample():
-  pass
+if __name__ == "__main__":
+  _SetupStaticData()
+  while not Team.GetAll():
+    pass
+  while not Judge.FindByName("judge 1"):
+    pass
+  while not Score.FindExample():
+    pass

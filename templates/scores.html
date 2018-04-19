@@ -7,7 +7,7 @@
  </head>
  <body>
    <div id="container">
-   <form method="post" action="{{ url_for('scores_form') }}">
+   <form method="post" name="selectors" action="{{ url_for('scores_form') }}">
    <p>
    <select name="judge">
    {% for j in judges %}
@@ -22,7 +22,7 @@
    </p>
    <input type="submit" value="lookup"/>
    </form>
-   <form method="post" action="{{ url_for('save_scores') }}">
+   <form method="post" name="scores" action="{{ url_for('save_scores') }}">
    <table name="scores">
    <tr><th>Category</th><th>Score</th><th>Notes</th></tr>
    <!-- [START scores] -->
@@ -32,6 +32,8 @@
       </div>
    {% endfor %}
    </table>
+   <input type="hidden" name="team" value="{{team}}"/>
+   <input type="hidden" name="judge" value="{{judge}}"/>
    <input type="submit"/>
    </form>
    </div>
