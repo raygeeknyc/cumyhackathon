@@ -4,16 +4,30 @@
  <head>
    <title>Enter Scores for a team {{team}}</title>
    <link rel="stylesheet" type="text/css" href="/static/style.css">
+   <script type="text/javascript">
+     window.onload = function(){
+     var judge = document.getElementById("judge");
+     var team = document.getElementById("team");
+     var save = document.getElementById("save");
+     team.addEventListener("change", function() {
+        save.disabled = true;
+     });
+     judge.addEventListener("change", function() {
+        save.disabled = true;
+     });
+     }
+   </script>
  </head>
  <body>
+ 
    <form method="post" name="score_editor" action="{{ url_for('scores_form') }}">
    <p>
-   <select name="judge">
+   <select name="judge" id="judge" class="lookupneeded">
    {% for j in judges %}
      <option value="{{j}}" {% if j== judge %}selected{% endif %}>{{j}}</option>
    {% endfor %}
    </select>
-   <select name="team">
+   <select id="team" name="team" class="lookupneeded">
    {% for t in teams %}
      <option value="{{t}}" {% if t== team %}selected{% endif %}>{{t}}</option>
    {% endfor %}
@@ -29,7 +43,7 @@
       </div>
    {% endfor %}
    </table>
-   <input type="submit" name="save" value="save scores"/>
+   <input type="submit" id="save" name="save" value="save scores"/>
    </form>
  </body>
 </html>
