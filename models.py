@@ -31,6 +31,15 @@ class _JudgingEntity(ndb.Model):
 
 class _NamedJudgingEntity(_JudgingEntity):
   @classmethod
+  def PersistInstance(cls, value_list):
+    instance = cls()
+    for i in range(0, len(value_list), 2):
+      setattr(instance, value_list[i], value_list[i+1])
+    existing_instances = cls.FindByName(instance.name)
+    if not existing_instances:
+      key = instance.put()
+
+  @classmethod
   def FindByName(cls, object_name):
     print("Finding {} '{}'".format(cls.__name__, object_name))
     instance_query = cls.query(cls.name == object_name )
@@ -56,51 +65,13 @@ class Team(_NamedJudgingEntity):
   members = ndb.StringProperty()
   contact = ndb.StringProperty()
 
-  @classmethod
-  def AddExample(cls):
-    cls.Add(name = "team 1", members = "", contact = "raygeeknyc@gmail.com")
-
-  @classmethod
-  def Add(cls, name, members, contact):
-    print("Adding a {}".format(cls.__name__))
-    team = Team(name = name, members = members, contact = contact)
-    print("Created {}".format(team))
-    key = team.put()
-    print("Added {}".format(key))
-    retrieved_copy = key.get()
-    print("Retrieved {}".format(retrieved_copy))
-
 class Category(_NamedJudgingEntity):
   name = ndb.StringProperty()
   description = ndb.StringProperty()
 
-  @classmethod
-  def AddExample(cls):
-    print("Adding an example {}".format(cls.__name__))
-    category_one = Category(name = "category 1", description = "a cat Category")
-    print("Created {}".format(category_one))
-    key = category_one.put()
-    print("Added {}".format(key))
-    retrieved_copy = key.get()
-    print("Retrieved {}".format(retrieved_copy))
-
 class Judge(_NamedJudgingEntity):
   name = ndb.StringProperty()
   contact = ndb.StringProperty()
-
-  @classmethod
-  def AddExample(cls):
-    cls.Add(name = "judge 1", contact = "none@nonesuch.com")
-
-  @classmethod
-  def Add(cls, name, contact):
-    print("Adding a {}".format(cls.__name__))
-    judge = Judge(name = name, contact = contact)
-    print("Created {}".format(judge))
-    key = judge.put()
-    print("Added {}".format(key))
-    retrieved_copy = key.get()
-    print("Retrieved {}".format(retrieved_copy))
 
 class Score(_JudgingEntity):
   team = ndb.StringProperty()
@@ -115,7 +86,9 @@ class Score(_JudgingEntity):
    for score in old_scores:
      score.key.delete()
    for item in items:
-     Score.Add(team, item['judge'], item['category'], item['score'], item['notes'])
+     Score.PersistInstance( ["team", team,
+       "judge", item["judge"], "category", item["category"],
+       "score", item["score"], "notes", item["notes"] ])
 
   @staticmethod
   def _ScoreKey(score):
@@ -167,34 +140,32 @@ class Score(_JudgingEntity):
 
 def _SetupStaticData():
   print("Setting up data")
-  print("Deleting old data")
-  for score in Score.GetAll():
-    print("Score: {}".format(score))
-  Score.DeleteAll()
-  Category.DeleteAll()
-  Team.DeleteAll()
-  Team.AddExample()
-  Team.Add(name = 'team Beta', members = 'raymond b, Christina A, Jim Sparks', contact='raygeeknyc@gmail.com')
   Judge.DeleteAll()
-  Judge.AddExample()
-  Judge.Add("Raymondo", "646-236-6743")
-  Judge.Add("Justin", "justin@cunystartups.com")
-  print("sorted", Judge.GetSorted())
-  Category.AddExample()
-  Score.AddExample()
-  Score.Add(team = 'team 1', judge = 'judge 1', category = 'cat 2', score = 1, notes = 'two')
-  Score.Add(team = 'team 1', judge = 'judge 2', category = 'cat 1', score = 1, notes = 'two')
-  Score.Add(team = 'team 1', judge = 'judge 2', category = 'cat 2', score = 1, notes = 'two')
-  Score.Add(team = 'team 2', judge = 'judge 1', category = 'category 1', score = 2, notes = 'uno')
-  Score.Add(team = 'team 2', judge = 'judge 1', category = 'cat 2', score = 5, notes = 'FIVE!!!')
-  Score.Add(team = 'team 2', judge = 'judge 2', category = 'cat 2', score = 1, notes = 'two')
-  Score.Add(team = 'team 2', judge = 'judge 2', category = 'cat 1', score = 1, notes = 'two')
+  Judge.PersistInstance(["name", "Raymond B", "contact", "raygeeknyc@gmail.com"])
+  Judge.PersistInstance(["name", "Christina A", "contact", "nonesuch@starz.com"])
+  Judge.PersistInstance(["name", "Justin H", "contact", "theotherguy@gmail.com"])
+  Judge.PersistInstance(["name", "Faith Hope", "contact", "faith@gmail.com"])
+  while len(Judge.GetAll()) < 4:
+    pass
+  print("Js {}".format(Judge.GetAll()))
 
-if __name__ == "__main__":
-  _SetupStaticData()
-  while not Team.GetAll():
+  Category.DeleteAll()
+  Category.PersistInstance(["name", "ingenious", "description", "how clever?"])
+  Category.PersistInstance(["name", "originality", "description", "how new?"])
+  Category.PersistInstance(["name", "freshness", "description", "how surprising?"])
+  Category.PersistInstance(["name", "difficulty", "description", "how hard is it?"])
+  while len(Category.GetAll()) < 4:
     pass
-  while not Judge.FindByName("judge 1"):
+  print("Cs {}".format(Category.GetAll()))
+
+  Team.DeleteAll()
+  Team.PersistInstance(["name", "The best team", "members", "Tm1,tm2,tm3", "contact", "tbt@gmail.com"])
+  Team.PersistInstance(["name", "The good team", "members", "gTm1,gtm2", "contact", "gbt@gmail.com"])
+  Team.PersistInstance(["name", "The Okay team", "members", "ok1", "contact", "ok@gmail.com"])
+  Team.PersistInstance(["name", "The Fair team", "members", "fair1,fair2,fair3,fair4", "contact", "fair1@gmail.com"])
+  Team.PersistInstance(["name", "The meh team", "members", "meh1,meh2,meh3,meh4,meh5", "contact", "meh@gmail.com"])
+  Team.PersistInstance(["name", "The team we don't talk about", "members", "m1,m2,m3", "contact", "dontcallus@gmail.com"])
+  while len(Team.GetAll()) < 6:
     pass
-  while not Score.FindExample():
-    pass
+  print("Ts {}".format(Team.GetAll()))
+_SetupStaticData()
