@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+ <head>
+   <title>Static Data has been reset</title>
+   <link rel="stylesheet" type="text/css" href="/static/style.css">
+ </head>
+ <body>
+   <div id="container">
+   <!-- [START judges] -->
+   <H2>Judges</H2>
+   {% for judge in judges %}
+      <div class="row">
+       <b>{{ judge.name }}
+      </div>
+   {% endfor %}
+   </div>
+   <div id="container">
+   <!-- [START judges] -->
+   <H2>Categories</H2>
+   {% for category in categories %}
+      <div class="row">
+       <b>{{ category.name }}
+      </div>
+   {% endfor %}
+   </div>
+   <!-- [START teams] -->
+   <H2>Teams</H2>
+   {% for team in teams %}
+      <div class="row">
+       <b>{{ team.name }}
+      </div>
+   {% endfor %}
+   </div>
+ </body>
+</html>
+{% endautoescape %}
