@@ -60,10 +60,15 @@ def save_scores():
 # [START all_scores_form]
 @app.route('/all_scores', methods=['POST', 'GET'])
 def all_scores_form():
-    team = 'team 1'
-    scores = Score.GetScoresForTeam(team)
+    scores = Score.GetSorted()
+    summaries = []
+    for team in Team.GetSorted():
+      total_score = 0
+      for score in Score.GetScoresForTeam(team.name):
+        total_score += score.score
+      summaries.append([team.name, total_score])
     return render_template('all_scores.html',
-      team = team,
+      summaries = summaries,
       scores=scores)
 # [END all_scores_form]
 

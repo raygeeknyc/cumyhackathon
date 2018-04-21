@@ -2,22 +2,37 @@
 {% autoescape true %}
 <html>
  <head>
-   <title>Scores for team {{team}}</title>
+   <title>Scores for all teams</title>
    <link rel="stylesheet" type="text/css" href="/static/style.css">
  </head>
  <body>
    <div id="container">
-   <form method="post" action="{{ url_for('save_scores') }}">
-   <table name="scores">
-   <tr><th>Judge</th><th>Category</th><th>Score</th><th>Notes</th></tr>
-   <!-- [START scores] -->
-   {% for score in scores %}
+   <form method="post" action="{{ url_for('all_scores_form') }}">
+   <div>
+   <h3>Total Scores</h3>
+   <table name="summaries">
+   <tr><th>Team</th><th>Total score</th></tr>
+   <!-- [START summaries] -->
+   {% for summary in summaries %}
       <div class="row">
-       <tr><td><input name="judge" value="{{score.judge}}" readonly/></td><td><input name="category" value="{{score.category}}" readonly/></td><td><input type="text" name="score" value="{{score.score}}"></td><td><input type="text" name="notes" value="{{score.notes}}"></td></tr>
+      <tr><td><input name="team_name" value="{{summary[0]}}" readonly/><td><input name="team_score" value="{{summary[1]}}" readonly/></tr>
       </div>
    {% endfor %}
    </table>
-   <input type="hidden" name="team" value="{{team}}"/>
+   </div>
+   <hr/>
+   <div>
+   <h3>All Score Details</h3>
+   <table name="scores">
+   <tr><th>Team</th><th>Judge</th><th>Category</th><th>Score</th><th>Notes</th></tr>
+   <!-- [START scores] -->
+   {% for score in scores %}
+      <div class="row">
+       <tr><td><input name="team" value="{{score.team}}" readonly/><td><input name="judge" value="{{score.judge}}" readonly/></td><td><input name="category" value="{{score.category}}" readonly/></td><td><input type="text" name="score" value="{{score.score}}"></td><td><input type="text" name="notes" value="{{score.notes}}"></td></tr>
+      </div>
+   {% endfor %}
+   </table>
+   </div>
    <input type="submit"/>
    </form>
    </div>

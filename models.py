@@ -154,6 +154,11 @@ class Score(_JudgingEntity):
     print("Found {} instances".format(instance_count))
     return instance_count
 
+  @classmethod
+  def GetSorted(cls):
+    entities = cls.GetAll()
+    return sorted(entities, key=cls._ScoreKey)
+
 def SetupStaticData():
   print("Setting up data")
   Judge.DeleteAll()
