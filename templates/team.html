@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+ <head>
+   <title>Enter Information for a team</title>
+   <link rel="stylesheet" type="text/css" href="/static/style.css">
+ </head>
+ <body>
+   <form method="post" name="team_editor" action="{{ url_for('team_form') }}">
+   <p>
+   Team Name:&nbsp;<input name="name" id="name" value="{{name}}"/><br/>
+   Team Members:&nbsp;<input name="members" id="members" value="{{members}}"/><br/>
+   Team Contact:&nbsp;<input name="contact" id="contact"/ value="{{contact}}"><br/>
+   </p>
+   <input type="submit" id="save" name="save" value="save team"/>
+   </form>
+ </body>
+</html>
+{% endautoescape %}
