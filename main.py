@@ -67,6 +67,35 @@ def all_scores_form():
       scores=scores)
 # [END all_scores_form]
 
+def save_team():
+  Team.PersistInstance(request.form['name'],
+    ["members", request.form['members'],
+    "contact", request.form['contact']])
+  while not len(Team.FindByName(request.form['name'])):
+    pass
+  Score.AddAllTeamTemplateScores()
+
+# [START team_form]
+@app.route('/team', methods=['POST', 'GET'])
+def team_form():
+    print("team_form")
+    if request.method == 'POST' and request.form.getlist('save'):
+      print("posted")
+      save_team()
+      name = request.form['name']
+      members = request.form['members']
+      contact = request.form['contact']
+    else:
+      print("not posted")
+      name = ''
+      members = ''
+      contact = ''
+    return render_template('team.html',
+      name = name,
+      members = members,
+      contact = contact)
+# [END team_form]
+
 # [START scores_form]
 @app.route('/scores', methods=['POST', 'GET'])
 def scores_form():

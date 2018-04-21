@@ -32,13 +32,19 @@ class _JudgingEntity(ndb.Model):
 
 class _NamedJudgingEntity(_JudgingEntity):
   @classmethod
-  def PersistInstance(cls, value_list):
-    instance = cls()
+  def PersistInstance(cls, name, value_list):
+    print("Finding {}:{}".format(cls.__name__, name))
+    existing = cls.FindByName(name)
+    if not existing:
+      print("not found")
+      existing = cls(name = name)
+    else:
+      existing = existing[0]
+      print("found {}".format(existing))
     for i in range(0, len(value_list), 2):
-      setattr(instance, value_list[i], value_list[i+1])
-    existing_instances = cls.FindByName(instance.name)
-    if not existing_instances:
-      key = instance.put()
+      setattr(existing, value_list[i], value_list[i+1])
+    print("saving {}".format(existing))
+    key = existing.put()
 
   @classmethod
   def FindByName(cls, object_name):
@@ -152,24 +158,17 @@ def _SetupStaticData():
   print("Setting up data")
   Judge.DeleteAll()
   for judge in JUDGES:
-    Judge.PersistInstance(judge)
+    Judge.PersistInstance(judge[1], judge)
   while len(Judge.GetAll()) < len(JUDGES):
     pass
   print("Js {}".format(Judge.GetAll()))
 
   Category.DeleteAll()
   for category in CATEGORIES:
-    Category.PersistInstance(category)
+    Category.PersistInstance(category[1], category)
   while len(Category.GetAll()) < len(CATEGORIES):
     pass
   print("Cs {}".format(Category.GetAll()))
-
-  Team.DeleteAll()
-  for team in TEAMS:
-    Team.PersistInstance(team)
-  while len(Team.GetAll()) < len(TEAMS):
-    pass
-  print("Ts {}".format(Team.GetAll()))
 
   Score.AddAllTeamTemplateScores()
 
