@@ -1,5 +1,6 @@
 import sys
 from google.appengine.ext import ndb
+from static_data import TEAMS, JUDGES, CATEGORIES, INITIAL_SCORE, INITIAL_NOTES
 
 class _JudgingEntity(ndb.Model):
   @classmethod
@@ -81,14 +82,13 @@ class Score(_JudgingEntity):
   notes = ndb.StringProperty()
 
   @staticmethod
-  def SaveTeamItems(team, items):
-   old_scores = Score.GetScoresForTeam(team)
-   for score in old_scores:
-     score.key.delete()
-   for item in items:
-     Score.PersistInstance( ["team", team,
-       "judge", item["judge"], "category", item["category"],
-       "score", item["score"], "notes", item["notes"] ])
+  def SaveTeamScores(team, judge, items):
+    old_scores = Score.GetScoresForTeam(team)
+    for score in [s for s in old_scores if s.judge == judge]:
+      score.key.delete()
+    for item in items:
+      Score.Add(team=team, judge=judge, category = item["category"],
+        score = item["score"], notes = item["notes"])
 
   @staticmethod
   def _ScoreKey(score):
@@ -107,16 +107,26 @@ class Score(_JudgingEntity):
     return scores
 
   @classmethod
-  def AddExample(cls):
-    print("Adding an example {}".format(cls.__name__))
-    score_one = cls.Add(team = "team 1",
-      judge = "judge 1",
-      category = "category 1",
-      score = 2,
-      notes = "did not do it well")
+  def AddAllTeamTemplateScores(cls):
+    print("Filling in scores for team {}".format(cls.__name__))
+    team_names = [team.name for team in Team.GetAll()]
+    judge_names = [judge.name for judge in Judge.GetAll()]
+    category_names = [category.name for category in Category.GetAll()]
 
-  @classmethod
-  def Add(cls, team, judge, category, score, notes):
+    all_scores = cls.GetAll()
+   
+    for team in team_names:
+      for judge in judge_names:
+        for category in category_names:
+          found = False
+          for score in all_scores:
+            if score.category == category and score.judge == judge and score.team == team:
+              found = True
+          if not found:
+            cls.Add(team, judge, category, INITIAL_SCORE, INITIAL_NOTES)
+  
+  @staticmethod
+  def Add(team, judge, category, score, notes):
     score = Score(team = team, judge = judge, category = category,
       score = score, notes = notes)
     key = score.put()
@@ -141,31 +151,26 @@ class Score(_JudgingEntity):
 def _SetupStaticData():
   print("Setting up data")
   Judge.DeleteAll()
-  Judge.PersistInstance(["name", "Raymond B", "contact", "raygeeknyc@gmail.com"])
-  Judge.PersistInstance(["name", "Christina A", "contact", "nonesuch@starz.com"])
-  Judge.PersistInstance(["name", "Justin H", "contact", "theotherguy@gmail.com"])
-  Judge.PersistInstance(["name", "Faith Hope", "contact", "faith@gmail.com"])
-  while len(Judge.GetAll()) < 4:
+  for judge in JUDGES:
+    Judge.PersistInstance(judge)
+  while len(Judge.GetAll()) < len(JUDGES):
     pass
   print("Js {}".format(Judge.GetAll()))
 
   Category.DeleteAll()
-  Category.PersistInstance(["name", "ingenious", "description", "how clever?"])
-  Category.PersistInstance(["name", "originality", "description", "how new?"])
-  Category.PersistInstance(["name", "freshness", "description", "how surprising?"])
-  Category.PersistInstance(["name", "difficulty", "description", "how hard is it?"])
-  while len(Category.GetAll()) < 4:
+  for category in CATEGORIES:
+    Category.PersistInstance(category)
+  while len(Category.GetAll()) < len(CATEGORIES):
     pass
   print("Cs {}".format(Category.GetAll()))
 
   Team.DeleteAll()
-  Team.PersistInstance(["name", "The best team", "members", "Tm1,tm2,tm3", "contact", "tbt@gmail.com"])
-  Team.PersistInstance(["name", "The good team", "members", "gTm1,gtm2", "contact", "gbt@gmail.com"])
-  Team.PersistInstance(["name", "The Okay team", "members", "ok1", "contact", "ok@gmail.com"])
-  Team.PersistInstance(["name", "The Fair team", "members", "fair1,fair2,fair3,fair4", "contact", "fair1@gmail.com"])
-  Team.PersistInstance(["name", "The meh team", "members", "meh1,meh2,meh3,meh4,meh5", "contact", "meh@gmail.com"])
-  Team.PersistInstance(["name", "The team we don't talk about", "members", "m1,m2,m3", "contact", "dontcallus@gmail.com"])
-  while len(Team.GetAll()) < 6:
+  for team in TEAMS:
+    Team.PersistInstance(team)
+  while len(Team.GetAll()) < len(TEAMS):
     pass
   print("Ts {}".format(Team.GetAll()))
+
+  Score.AddAllTeamTemplateScores()
+
 _SetupStaticData()

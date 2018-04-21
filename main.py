@@ -55,7 +55,7 @@ def save_scores():
     item['score'] = int(request.form.getlist('score')[i])
     item['notes'] = request.form.getlist('notes')[i]
     items.append(item)
-  Score.SaveTeamItems(team, items)
+  Score.SaveTeamScores(team, judge, items)
 
 # [START all_scores_form]
 @app.route('/all_scores', methods=['POST', 'GET'])
