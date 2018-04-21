@@ -98,7 +98,7 @@ class Score(_JudgingEntity):
 
   @staticmethod
   def _ScoreKey(score):
-    return "{:10.10}".format(score.team)+"{:10.10}".format(score.judge)+"{:10.10}".format(score.category)
+    return "{:10.10}".format(score.team).upper()+"{:10.10}".format(score.judge).upper()+"{:10.10}".format(score.category).upper()
 
   @classmethod
   def GetScoresForTeam(cls, team):

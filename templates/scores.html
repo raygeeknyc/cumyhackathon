@@ -24,7 +24,7 @@
    <p>
    <select name="judge" id="judge" class="lookupneeded">
    {% for j in judges %}
-     <option value="{{j}}" {% if j== judge %}selected{% endif %}>{{j}}</option>
+     <option value="{{j}}" {% if j == judge %}selected{% endif %}>{{j}}</option>
    {% endfor %}
    </select>
    <select id="team" name="team" class="lookupneeded">
@@ -43,7 +43,7 @@
       </div>
    {% endfor %}
    </table>
-   <input type="submit" id="save" name="save" value="save scores"/>
+   <input type="submit" id="save" name="save" value="save scores" {%if saved%}disabled="disabled"{% endif %}/>
    </form>
  </body>
 </html>

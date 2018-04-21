@@ -66,7 +66,7 @@ def all_scores_form():
       total_score = 0
       for score in Score.GetScoresForTeam(team.name):
         total_score += score.score
-      summaries.append([team.name, total_score])
+      summaries.append([team.name, team.members, team.contact, total_score])
     return render_template('all_scores.html',
       summaries = summaries,
       scores=scores)
@@ -116,6 +116,9 @@ def team_form():
 def scores_form():
     if request.form.getlist('save'):
       save_scores()
+      saved = True
+    else:
+      saved = False
     if request.form and request.form.getlist('judge'):
       judge = request.form.getlist('judge')[0]
     else:
@@ -136,7 +139,8 @@ def scores_form():
       judge = judge,
       teams = teams,
       judges = judges,
-      scores=scores)
+      scores=scores,
+      saved = saved)
 # [END scores_form]
 
 @app.errorhandler(500)
