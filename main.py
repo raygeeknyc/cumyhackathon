@@ -75,18 +75,28 @@ def save_team():
     pass
   Score.AddAllTeamTemplateScores()
 
+# [START reset_data_form]
+@app.route('/reset', methods=['POST', 'GET'])
+def reset_form():
+    models.SetupStaticData()
+    judges = Judge.GetAll()
+    categories = Category.GetAll()
+    teams = Team.GetAll()
+    return render_template('reset.html',
+      judges = judges,
+      teams = teams,
+      categories = categories)
+# [END reset_data_form]
+
 # [START team_form]
 @app.route('/team', methods=['POST', 'GET'])
 def team_form():
-    print("team_form")
     if request.method == 'POST' and request.form.getlist('save'):
-      print("posted")
       save_team()
       name = request.form['name']
       members = request.form['members']
       contact = request.form['contact']
     else:
-      print("not posted")
       name = ''
       members = ''
       contact = ''

@@ -154,7 +154,7 @@ class Score(_JudgingEntity):
     print("Found {} instances".format(instance_count))
     return instance_count
 
-def _SetupStaticData():
+def SetupStaticData():
   print("Setting up data")
   Judge.DeleteAll()
   for judge in JUDGES:
@@ -171,5 +171,3 @@ def _SetupStaticData():
   print("Cs {}".format(Category.GetAll()))
 
   Score.AddAllTeamTemplateScores()
-
-_SetupStaticData()
