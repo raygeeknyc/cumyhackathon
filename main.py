@@ -75,8 +75,10 @@ def all_scores_form():
         total_score += score.score
       summaries.append([team.name, team.members, team.contact, total_score])
     summaries.sort(reverse=True, key=lambda x: int(x[3]))
+    team_count = len(summaries)
     return render_template('all_scores.html',
       summaries = summaries,
+      team_count = team_count,
       scores=scores)
 # [END all_scores_form]
 
