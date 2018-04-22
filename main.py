@@ -19,28 +19,35 @@ from flask import Flask, render_template, request
 from models import Judge, Score, Team, Category
 import logging
 import models
+from google.appengine.api import users
+
 # [END imports]
 
 # [START create_app]
 app = Flask(__name__)
 # [END create_app]
 
-
 # [START start]
 @app.route('/login', methods=['POST', 'GET'])
 @app.route('/')
-def start():
-    return render_template('login.html')
+def login_form():
+  print("login")
+  user = users.get_current_user()
+  print("user {}".format(user))
+  admin = "N/A"
+  if user:
+    if users.is_current_user_admin():
+      print("You are an administrator.")
+      admin = "yes"
+    else:
+      print("You are not an administrator.")
+      admin = "no"
+  else:
+    print("You are not logged in.")
+  return render_template('signed_in.html',
+    username = str(user),
+    admin = admin)
 # [END start]
-
-
-# [START judge_form]
-@app.route('/signin', methods=['POST'])
-def judge_form():
-    judges = Judge.GetSorted()
-    return render_template('signed_in.html',
-      judges=judges)
-# [END judge_form]
 
 def save_scores():
   print("saving scores")

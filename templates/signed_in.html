@@ -2,17 +2,13 @@
 {% autoescape true %}
 <html>
  <head>
-   <title>Judge Signed In</title>
+   <title>Signed In</title>
    <link rel="stylesheet" type="text/css" href="/static/style.css">
  </head>
  <body>
    <div id="container">
-   <!-- [START judges] -->
-   {% for judge in judges %}
-      <div class="row">
-       <b>{{ judge.name }}
-      </div>
-   {% endfor %}
+     User: {{username}}<br/>
+     Admin: {{admin}}
    </div>
  </body>
 </html>
