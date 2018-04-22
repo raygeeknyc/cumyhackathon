@@ -13,12 +13,12 @@
 # limitations under the License.
 
 # [START app]
-import logging
-import models
 
 # [START imports]
 from flask import Flask, render_template, request
 from models import Judge, Score, Team, Category
+import logging
+import models
 # [END imports]
 
 # [START create_app]
@@ -62,11 +62,12 @@ def save_scores():
 def all_scores_form():
     scores = Score.GetSorted()
     summaries = []
-    for team in Team.GetSorted():
+    for team in Team.GetAll():
       total_score = 0
       for score in Score.GetScoresForTeam(team.name):
         total_score += score.score
       summaries.append([team.name, team.members, team.contact, total_score])
+    summaries.sort(reverse=True, key=lambda x: int(x[3]))
     return render_template('all_scores.html',
       summaries = summaries,
       scores=scores)
