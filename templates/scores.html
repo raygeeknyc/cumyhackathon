@@ -39,7 +39,7 @@
    <!-- [START scores] -->
    {% for score in scores %}
       <div class="row">
-       <tr><td>{{score.category}}</td><td><input type="text" name="score" value="{{score.score}}"></td><td><input type="text" name="notes" value="{{score.notes}}"></td></tr>
+       <tr><td><input type="hidden" name="category" value="{{score.category}}"/>{{score.category}}</td><td><input type="text" name="score" value="{{score.score}}"></td><td><input type="text" name="notes" value="{{score.notes}}"></td></tr>
       </div>
    {% endfor %}
    </table>
