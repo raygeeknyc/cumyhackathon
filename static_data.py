@@ -1,6 +1,8 @@
 INITIAL_SCORE = 0
 INITIAL_NOTES = "Not yet scored"
 
+SUPERUSER_EMAIL = "raygeeknyc@gmail.com"
+
 JUDGES = [
   ["name", "Raymond B", "contact", "raygeeknyc@gmail.com"],
   ["name", "Christina A", "contact", "divac@gmail.com"],

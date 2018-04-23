@@ -15,8 +15,9 @@
 # [START app]
 
 # [START imports]
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 from models import Judge, Score, Team, Category
+from static_data import SUPERUSER_EMAIL
 import logging
 import models
 from google.appengine.api import users
@@ -93,14 +94,18 @@ def save_team():
 # [START reset_data_form]
 @app.route('/reset', methods=['POST', 'GET'])
 def reset_form():
-    models.SetupStaticData()
-    judges = Judge.GetAll()
-    categories = Category.GetAll()
-    teams = Team.GetAll()
-    return render_template('reset.html',
-      judges = judges,
-      teams = teams,
-      categories = categories)
+  user = users.get_current_user()
+  if user.email() != SUPERUSER_EMAIL:
+    print("user is {}".format(user.email()))
+    abort(403)
+  models.SetupStaticData()
+  judges = Judge.GetAll()
+  categories = Category.GetAll()
+  teams = Team.GetAll()
+  return render_template('reset.html',
+    judges = judges,
+    teams = teams,
+    categories = categories)
 # [END reset_data_form]
 
 # [START team_form]
