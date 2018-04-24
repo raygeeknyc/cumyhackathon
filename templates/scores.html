@@ -43,7 +43,7 @@
       </div>
    {% endfor %}
    </table>
-   <input type="submit" id="save" name="save" value="save scores" {%if saved%}disabled="disabled"{% endif %}/>
+   <input type="submit" id="save" name="save" value="save scores" {%if not scores or saved%}disabled="disabled"{% endif %}/>
    </form>
  </body>
 </html>
