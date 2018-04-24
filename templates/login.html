@@ -4,21 +4,12 @@
    <link rel="stylesheet" type="text/css" href="/static/style.css">
   </head>
   <body>
+{% include "navbar.html" %}
     <div id="container">
       <div class="pagetitle">
         <h1>Judge Signin</h1>
       </div>
-      <div id="main">
-        <form method="post" action="{{ url_for('judge_form') }}">
-          <label for="name">Name:</label>
-          <input type="text" name="name"><br />
-          <label for="email">Email address:</label>
-          <input type="email" name="email"><br />
-          <label for="contact">Contact, other than email:</label>
-          <input type="contact" name="contact"><br />
-          <input type="submit">
-        </form>
-      </div>
+    <a href="{{auth_url}}">{{auth_action}}</a>
     </div>
   </body>
 </html>

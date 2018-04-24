@@ -6,6 +6,7 @@
    <link rel="stylesheet" type="text/css" href="/static/style.css">
  </head>
  <body>
+{% include "navbar.html" %}
    <div id="container">
    <form method="post" action="{{ url_for('start') }}">
    <h1>Your {{count}} scores for {{team}}, they're saved!</h1>

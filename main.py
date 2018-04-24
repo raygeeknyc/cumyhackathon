@@ -28,12 +28,28 @@ from google.appengine.api import users
 app = Flask(__name__)
 # [END create_app]
 
-# [START start]
+# [START login]
 @app.route('/login', methods=['POST', 'GET'])
-@app.route('/')
 def login_form():
-  print("login")
   user = users.get_current_user()
+  if user:
+    auth_url = users.create_logout_url('/')
+    auth_action = "logout {}".format(user.nickname())
+  else:
+    auth_url = users.create_login_url('/')
+    auth_action = "login"
+  return render_template('login.html',
+    auth_url=auth_url,
+    auth_action=auth_action)
+# [END login]
+
+# [START start]
+@app.route('/user', methods=['POST', 'GET'])
+@app.route('/')
+def user_form():
+  user = users.get_current_user()
+  if not user:
+    flask.redirect("/login")
   print("user {}".format(user))
   admin = "N/A"
   if user:

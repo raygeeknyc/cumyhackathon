@@ -19,7 +19,7 @@
    </script>
  </head>
  <body>
- 
+{% include "navbar.html" %}   
    <form method="post" name="score_editor" action="{{ url_for('scores_form') }}">
    <p>
    <select name="judge" id="judge" class="lookupneeded">

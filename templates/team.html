@@ -6,6 +6,7 @@
    <link rel="stylesheet" type="text/css" href="/static/style.css">
  </head>
  <body>
+{% include "navbar.html" %}
    <form method="post" name="team_editor" action="{{ url_for('team_form') }}">
    <p>
    Team Name:&nbsp;<input name="name" id="name" value="{{name}}"/><br/>
