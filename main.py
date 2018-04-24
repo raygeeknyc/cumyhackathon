@@ -84,11 +84,12 @@ def save_scores():
 # [START all_scores_form]
 @app.route('/all_scores', methods=['POST', 'GET'])
 def all_scores_form():
-    scores = Score.GetSorted()
+    scores = []
     summaries = []
     for team in Team.GetAll():
       total_score = 0
       for score in Score.GetScoresForTeam(team.name):
+        scores.append(score)
         total_score += score.score
       summaries.append([team.name, team.members, team.contact, total_score])
     summaries.sort(reverse=True, key=lambda x: int(x[3]))
@@ -108,20 +109,26 @@ def save_team():
   Score.AddAllTeamTemplateScores()
 
 # [START reset_data_form]
-@app.route('/reset', methods=['POST', 'GET'])
+@app.route('/reset', methods=['GET'])
 def reset_form():
   user = users.get_current_user()
   if user.email() != SUPERUSER_EMAIL:
     print("user is {}".format(user.email()))
     abort(403)
+  print("request args {}".format(request.args))
+  if 'scores' in request.args:
+    print("Deleting scores")
+    Score.DeleteAll()
   models.SetupStaticData()
-  judges = Judge.GetAll()
-  categories = Category.GetAll()
-  teams = Team.GetAll()
+  judges = Judge.GetSorted()
+  categories = Category.GetSorted()
+  teams = Team.GetSorted()
+  scores = Score.GetSorted()
   return render_template('reset.html',
     judges = judges,
     teams = teams,
-    categories = categories)
+    categories = categories,
+    scores = scores)
 # [END reset_data_form]
 
 # [START team_form]

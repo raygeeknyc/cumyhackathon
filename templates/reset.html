@@ -32,6 +32,13 @@
        <b>{{ team.name }}
       </div>
    {% endfor %}
+   <!-- [START scores -->
+   <H2>Scores</H2>
+   {% for score in scores %}
+      <div class="row">
+       <b>{{score.team}} : {{score.judge}} : {{score.category}} : {{score.score}}:{{score.notes}}
+      </div>
+   {% endfor %}
    </div>
  </body>
 </html>
