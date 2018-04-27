@@ -88,10 +88,17 @@ def all_scores_form():
     summaries = []
     for team in Team.GetAll():
       total_score = 0
-      for score in Score.GetScoresForTeam(team.name):
-        scores.append(score)
-        total_score += score.score
-      summaries.append([team.name, team.members, team.contact, total_score])
+      team_judged_by = []
+      all_team_scores = Score.GetScoresForTeam(team.name)
+      scores += all_team_scores
+      judges = [j.name for j in Judge.GetAll()]
+      for judge in judges:
+        judge_scores = sum([score.score for score in all_team_scores if score.judge == judge])
+        total_score += judge_scores
+        if judge_scores:
+          team_judged_by.append(judge)
+      judge_names = ','.join(team_judged_by)
+      summaries.append([team.name, team.members, team.contact, total_score, judge_names])
     summaries.sort(reverse=True, key=lambda x: int(x[3]))
     team_count = len(summaries)
     return render_template('all_scores.html',
