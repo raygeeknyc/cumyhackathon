@@ -4,19 +4,22 @@ INITIAL_NOTES = "Not yet scored"
 SUPERUSER_EMAIL = "raygeeknyc@gmail.com"
 
 JUDGES = [
-  ["name", "Raymond B", "contact", "raygeeknyc@gmail.com"],
-  ["name", "Christina A", "contact", "divac@gmail.com"],
-  ["name", "Richard Feynman", "contact", "gone@remembered.com"],
-  ["name", "Isaac Newton", "contact", "nonesuch@archive.org"],
-  ["name", "James T Kirk", "contact", "captain@ncc1701.starfleet.gov"],
+  ["name", "Raymond Blum", "contact", "raymondb@google.com"],
+  ["name", "Faith Fraser", "contact", "hi@cunystartups.com"],
+  ["name", "Peter Harrison", "contact", "hi@cunystartups.com"],
+  ["name", "Iynna Hililou", "contact", "iIynna.Hililou@gmail.com"],
+  ["name", "Philip Delvecchio", "contact", "phil@ventureoutny.com"],
+  ["name", "Alex Clark", "contact", "alexander@codecademy.com"],
+  ["name", "Beth Morrow", "contact", "bmorrow@igc.org"],
+  ["name", "Mofizur Rahman", "contact", "Mofizur.Rahman@ibm.com"],
 ]
 
 CATEGORIES= [
-  ["name", "ingenuity", "description", "how clever?"],
-  ["name", "relevance", "description", "How much did it relate to the theme?"],
-  ["name", "technology", "description", "What level of technological engagement is seen?"],
-  ["name", "appeal", "description", "How appealing is it in name, presentation?"],
-  ["name", "presentation", "description", "How well was the project presented by the team?"],
+  ["name", "Compelling", "description", "How compelling is the user story?"],
+  ["name", "Original", "description", "How original is the idea?"],
+  ["name", "Look and Feel", "description", "Look and Feel of the product"],
+  ["name", "Solution clarity", "description", "Is the problem and solution clear?"],
+  ["name", "Completion", "description", "How much has been completed?"],
 ]
 
 TEAMS = [

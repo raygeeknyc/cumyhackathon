@@ -126,6 +126,9 @@ def reset_form():
   if 'scores' in request.args:
     print("Deleting scores")
     Score.DeleteAll()
+  if 'team' in request.args:
+    print("Deleting teams")
+    Team.DeleteAll()
   models.SetupStaticData()
   judges = Judge.GetSorted()
   categories = Category.GetSorted()
